@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProposalPilot — AI Proposal Generator for Upwork & Fiverr</title>
+  <meta name="description" content="Generate high-converting Upwork & Fiverr proposals easily. 3 free proposals daily." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .bg-mesh {
+      background-image: radial-gradient(at 15% 12%, rgba(59,130,246,0.14) 0px, transparent 55%),
+      radial-gradient(at 85% 20%, rgba(37,99,235,0.10) 0px, transparent 50%),
+      radial-gradient(at 50% 90%, rgba(96,165,250,0.10) 0px, transparent 55%);
+    }
+    .dark .bg-mesh {
+      background-image: radial-gradient(at 15% 12%, rgba(59,130,246,0.20) 0px, transparent 55%),
+      radial-gradient(at 85% 20%, rgba(37,99,235,0.16) 0px, transparent 50%),
+      radial-gradient(at 50% 90%, rgba(30,58,138,0.28) 0px, transparent 55%);
+    }
+    .platform-btn.active { background:#3b82f6; color:#fff; }
+    .tone-option.active { background:#3b82f6; color:#fff; }
+    .scroll-thin::-webkit-scrollbar { width:8px; }
+    .scroll-thin::-webkit-scrollbar-thumb { background:rgba(148,163,184,.4); border-radius:8px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 transition-colors duration-300 antialiased">
+<div class="bg-mesh min-h-screen flex flex-col">
+  <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/70 dark:bg-slate-950/70 border-b border-slate-200/70">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 grid place-items-center text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 7-9 7 9"/><path d="M12 3v18"/><path d="m5 12 7 4 7-4"/></svg>
+        </span>
+        <span class="font-extrabold text-lg">Proposal<span class="text-brand-600">Pilot</span></span>
+      </a>
+      <nav class="hidden md:flex gap-1 text-sm font-medium">
+        <button class="px-3.5 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Generator</button>
+        <button id="openPricingBtn" class="px-3.5 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Pricing</button>
+      </nav>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
+          <span id="quotaText">3 free left</span>
+        </span>
+        <button id="themeToggle" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 grid place-items-center">
+          <svg class="dark:hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="hidden dark:block" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl mx-auto px-5 py-12 w-full">
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-7 shadow-sm">
+        <h2 class="font-bold text-lg mb-5">Proposal Details</h2>
+        <label class="block text-sm font-semibold mb-2">Platform</label>
+        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800 mb-5">
+          <button data-platform="Upwork" class="platform-btn py-2.5 rounded-lg text-sm font-medium active">Upwork</button>
+          <button data-platform="Fiverr" class="platform-btn py-2.5 rounded-lg text-sm font-medium">Fiverr</button>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-5">
+          <div>
+            <label class="block text-sm font-semibold mb-2">Industry</label>
+            <select id="industry" class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+              <option>Web Development</option>
+              <option>UI Design</option>
+              <option>Video Editing</option>
+              <option>E-commerce Operation</option>
+              <option>Content Writing</option>
+              <option>Translation</option>
+              <option>Digital Marketing</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-2">Tone</label>
+            <div class="grid grid-cols-3 gap-1">
+              <button data-tone="Professional" class="tone-option py-2 rounded text-xs border border-slate-200 dark:border-slate-700 active">Professional</button>
+              <button data-tone="Concise" class="tone-option py-2 rounded text-xs border border-slate-200 dark:border-slate-700">Concise</button>
+              <button data-tone="Friendly" class="tone-option py-2 rounded text-xs border border-slate-200 dark:border-slate-700">Friendly</button>
+            </div>
+          </div>
+        </div>
+        <div class="mb-5">
+          <label class="block text-sm font-semibold mb-2">Your Experience & Results</label>
+          <textarea id="exp" rows="3" class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-3 text-sm scroll-thin outline-none focus:ring-2 focus:ring-brand-500" placeholder="Your work experience..."></textarea>
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-semibold mb-2">Job Description</label>
+          <textarea id="job" rows="4" class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-3 text-sm scroll-thin outline-none focus:ring-2 focus:ring-brand-500" placeholder="Paste client job post here..."></textarea>
+        </div>
+        <button id="generateBtn" onclick="runGenerate()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-700 text-white font-semibold hover:bg-brand-700 transition">Generate Proposal</button>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-7 shadow-sm flex flex-col">
+        <div class="flex justify-between items-center mb-5">
+          <h2 class="font-bold text-lg">Generated Proposal</h2>
+          <button id="copyBtn" class="px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">Copy Text</button>
+        </div>
+        <div id="output" class="flex-1 min-h-[320px] p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-sm whitespace-pre-wrap">Your proposal will show here...</div>
+      </div>
+    </div>
+  </main>
+
+  <div id="pricingModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-7">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-xl font-bold">Daily Free Quota Used Up</h3>
+        <button id="closeModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="text-slate-600 dark:text-slate-400 mb-6">Upgrade to keep generating proposals:</p>
+      <div class="space-y-4">
+        <div class="border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+          <h4 class="font-bold text-lg">$4.99 / Month</h4>
+          <p class="text-sm text-slate-500">100 proposals per month</p>
+        </div>
+        <div class="border-2 border-brand-500 rounded-xl p-5">
+          <h4 class="font-bold text-lg">$9.99 / Month</h4>
+          <p class="text-sm text-slate-500">Unlimited proposals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are a professional Upwork & Fiverr proposal writer.
+Rules:
+1. Word count: 115~125 English words exactly.
+2. Structure: Client pain hook → your quantified experience → 3 work steps → polite CTA.
+3. Natural human tone, low AI detection, short paragraphs.
+4. Formal for Upwork, casual for Fiverr per selection.
+Only output the proposal text, no extra words.`;
+
+const API_URL = "https://ai-proposal-generator-n.hu1037972934.workers.dev";
+
+function getUsed() {
+  const key = `q_${new Date().toISOString().split('T')[0]}`;
+  return Number(localStorage.getItem(key)) || 0;
+}
+function setUsed(n) {
+  const key = `q_${new Date().toISOString().split('T')[0]}`;
+  localStorage.setItem(key, n);
+  document.getElementById("quotaText").textContent = `${3-n} free left`;
+}
+
+async function runGenerate() {
+  const used = getUsed();
+  if (used >= 3) {
+    document.getElementById("pricingModal").classList.remove("hidden");
+    return;
+  }
+
+  const job = document.getElementById("job").value.trim();
+  const exp = document.getElementById("exp").value.trim();
+  const platform = document.querySelector(".platform-btn.active").dataset.platform;
+  const tone = document.querySelector(".tone-option.active").dataset.tone;
+  const industry = document.getElementById("industry").value;
+
+  if (!job) {
+    alert("Please fill job description first");
+    return;
+  }
+
+  const btn = document.getElementById("generateBtn");
+  const outBox = document.getElementById("output");
+  btn.disabled = true;
+  btn.textContent = "Generating...";
+  outBox.innerText = "Waiting for result...";
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        messages: [
+          {role:"system", content:SYSTEM_PROMPT},
+          {role:"user", content:`Platform:${platform}, Tone:${tone}, Industry:${industry}\nMy experience:${exp}\nJob post:${job}`}
+        ]
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Quota exhausted");
+      outBox.innerText = "";
+      return;
+    }
+
+    outBox.innerText = data.content;
+    setUsed(used + 1);
+  } catch (err) {
+    alert("Network error, please retry");
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Generate Proposal";
+  }
+}
+
+document.getElementById("copyBtn").onclick = async () => {
+  const text = document.getElementById("output").innerText;
+  await navigator.clipboard.writeText(text);
+  alert("Copied!");
+};
+
+document.querySelectorAll(".platform-btn").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".platform-btn").forEach(i=>i.classList.remove("active"));
+  b.classList.add("active");
+});
+document.querySelectorAll(".tone-option").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tone-option").forEach(i=>i.classList.remove("active"));
+  b.classList.add("active");
+});
+
+document.getElementById("closeModal").onclick = ()=>{
+  document.getElementById("pricingModal").classList.add("hidden");
+};
+
+document.getElementById("themeToggle").onclick = ()=>{
+  document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme", document.documentElement.classList.contains("dark")?"dark":"light");
+};
+if(localStorage.getItem("theme")==="dark") document.documentElement.classList.add("dark");
+
+window.onload = ()=>{
+  document.getElementById("quotaText").textContent = `${3-getUsed()} free left`;
+  const savedExp = localStorage.getItem("user_exp");
+  if(savedExp) document.getElementById("exp").value = savedExp;
+};
+document.getElementById("exp").oninput = e=>localStorage.setItem("user_exp", e.target.value);
+</script>
+</body>
+</html>
